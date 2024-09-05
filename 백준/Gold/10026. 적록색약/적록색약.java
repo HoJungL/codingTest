@@ -58,6 +58,7 @@ public class Main {
 		visited[i][j] = true;
 		Queue<int[]> queue = new ArrayDeque<>();
 		queue.add(new int[] { i, j });
+		// 현재 컬러(R,G,B 중 1개)
 		String currentColor = matrix[i][j];
 
 		while (!queue.isEmpty()) {
@@ -67,16 +68,20 @@ public class Main {
 			for (int k = 0; k < 4; k++) {
 				int nx = ex + dx[k];
 				int ny = ey + dy[k];
-
 				if (isTrue(nx, ny) && !visited[nx][ny]) {
+					// 움직인 뒤의 컬러(RGB중하나)
 					String nextColor = matrix[nx][ny];
+					// 만약에 색약이면
 					if (rg) {
+						// R이랑 G랑 구별 안되니까 하나로 처리하고
 						if (currentColor.equals("R") || currentColor.endsWith("G")) {
+							// 현재 컬러가 R이나 G이면
 							if (nextColor.equals("R") || nextColor.equals("G")) {
+								// BFS
 								queue.add(new int[] { nx, ny });
 								visited[nx][ny] = true;
 							}
-						} else if (currentColor.equals("B")) {
+						} else {
 							if (nextColor.equals("B")) {
 								queue.add(new int[] { nx, ny });
 								visited[nx][ny] = true;
