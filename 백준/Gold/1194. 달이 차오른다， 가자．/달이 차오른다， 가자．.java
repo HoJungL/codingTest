@@ -6,7 +6,7 @@ import java.util.Queue;
 public class Main {
 
 	static class Node {
-		int x, y,keys;
+		int x, y, keys;
 
 		public Node(int x, int y, int keys) {
 			this.x = x;
@@ -104,5 +104,4 @@ public class Main {
 	private static boolean isTrue(int i, int j) {
 		return i >= 0 && i < N && j >= 0 && j < M;
 	}
-
 }
