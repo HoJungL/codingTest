@@ -1,7 +1,7 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.PriorityQueue;
 
 public class Solution {
 
@@ -13,6 +13,8 @@ public class Solution {
 		return parents[a] = findSet(parents[a]);
 	}
 
+	static int[] rank;
+
 	static boolean union(int a, int b) {
 		int aRoot = findSet(a);
 		int bRoot = findSet(b);
@@ -20,7 +22,16 @@ public class Solution {
 		if (aRoot == bRoot) {
 			return false;
 		}
-		parents[bRoot] = aRoot;
+
+		// Union by rank to keep the tree shallow
+		if (rank[aRoot] > rank[bRoot]) {
+			parents[bRoot] = aRoot;
+		} else if (rank[aRoot] < rank[bRoot]) {
+			parents[aRoot] = bRoot;
+		} else {
+			parents[bRoot] = aRoot;
+			rank[aRoot]++;
+		}
 		return true;
 	}
 
@@ -70,24 +81,26 @@ public class Solution {
 			}
 			double weight = Double.parseDouble(in.readLine());
 			parents = new int[N];
-            for (int i = 0; i < N; i++) {
-                parents[i] = i;
-            }
-            ArrayList<Edge> edges = new ArrayList<>();
+			rank = new int[N];
+			for (int i = 0; i < N; i++) {
+				parents[i] = i;
+				rank[i] = 0;
+			}
+
+			PriorityQueue<Edge> edges = new PriorityQueue<>();
+
 			for (int i = 0; i < N; i++) {
 				for (int j = i + 1; j < N; j++) {
 					double cost = dist(x[i], x[j], y[i], y[j]) * weight;
-					edges.add(new Edge(i,j,cost));
+					edges.add(new Edge(i, j, cost));
 				}
 			}
-			Collections.sort(edges);
 			double result = 0;
 			int cnt = 0;
-			for (Edge e : edges) {
-				int xx = e.from;
-				int yy = e.to;
-				if (findSet(xx) != findSet(yy)) {
-					union(xx, yy);
+			while (!edges.isEmpty()) {
+				Edge e = edges.poll();
+
+				if (union(e.from, e.to)) {
 					result += e.cost;
 					cnt++;
 					if (cnt == N - 1) {
