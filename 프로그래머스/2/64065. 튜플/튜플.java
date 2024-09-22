@@ -1,37 +1,54 @@
+
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.HashMap;
 
 class Solution {
 	public int[] solution(String s) {
-		s = s.substring(2, s.length()-2).replace("},{", " ");
-		String[] sets = s.split(" ");
-		
-		List<Set<Integer>> list = new ArrayList<>();
-		for (String set : sets) {
-			Set<Integer> numSet = new HashSet<>();
-			for (String num : set.split(",")) {
-				numSet.add(Integer.parseInt(num));
+		int[] answer;
+		ArrayList<String> list = new ArrayList<>();
+		HashMap<String, String> hashmap = new HashMap<String, String>();
+		for (int i = 0; i < s.length(); i++) {
+			String temp = "";
+			// 튜플 집합 리스트에 저장
+			if (s.charAt(i) == '{') {
+				for (int j = i + 1; j < s.length(); j++) {
+					// 마지막 집합까지 다 저장
+					if (s.charAt(j) == '{') {
+						continue;
+					}
+					if (s.charAt(j) == '}') {
+						list.add(temp);
+						break;
+					}
+					temp += s.charAt(j);
+				}
 			}
-			list.add(numSet);
 		}
-		list.sort(Comparator.comparingInt(Set::size));
+
+		answer = new int[list.size()-1];
 		
-		List<Integer> result = new ArrayList<Integer>();
-		Set<Integer> seen = new HashSet<>();
-		// 작은 집합부터 차례대로 숫자를 확인하여 순서 복원
-        for (Set<Integer> set : list) {
-            for (int num : set) {
-                if (seen.add(num)) {
-                    result.add(num);
-                }
-            }
-        }
-        // 결과를 int 배열로 변환하여 answer에 저장
-        int[] answer = result.stream().mapToInt(i -> i).toArray();
-        
-        return answer;
+		Collections.sort(list, new Comparator<String>() {
+			@Override
+			public int compare(String o1, String o2) {
+
+				return o1.length() - o2.length();
+			}
+		});
+		String[] strArr = new String[list.size()];
+		int index = 0;
+		for (int i = 0; i < list.size(); i++) {
+			strArr = list.get(i).split(",");
+			for (int j = 0; j < strArr.length; j++) {
+				if (!hashmap.containsKey(strArr[j])) {
+					answer[index++] = Integer.parseInt(strArr[j]);
+					hashmap.put(strArr[j], strArr[j]);
+					
+				}
+			}
+		}
+
+		return answer;
 	}
 }
