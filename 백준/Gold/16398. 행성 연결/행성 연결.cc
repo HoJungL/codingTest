@@ -37,7 +37,7 @@ void FASTIO() {
 int main() {
 	cin >> n;
 	for (int i = 0; i < 1003; i++) lst[i] = i;
-    v.reserve(n * (n-1) / 2); 
+    //v.reserve(n * (n-1) / 2); 
 	for (int i = 0; i < n; i++) {
 		for (int j = 0; j < n; j++) {
 			cin >> a[i][j];
