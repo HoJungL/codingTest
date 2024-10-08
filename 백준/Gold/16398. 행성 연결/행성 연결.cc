@@ -17,15 +17,19 @@ bool cmp(vector<int> a, vector<int> b) {
 }
 
 int find(int x) {
-	if (x == lst[x]) return x;
-	return lst[x] = find(lst[x]);
+	if (lst[x] != x)
+        lst[x] = find(lst[x]);
+ 
+    return lst[x];
 }
 
-void merge(int x, int y) {
-	x = find(x);
-	y = find(y);
-	if (x > y) lst[x] = y;
-	else lst[y] = x;
+void merge(int a, int b) {
+	a = find(a);
+    b = find(b);
+ 
+    if (a > b)
+        lst[a] = b;
+    else lst[b] = a;
 }
 
 void FASTIO() {
