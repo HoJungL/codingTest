@@ -44,18 +44,20 @@ class Solution {
 
 			// 유효기간을 더해 새로운 연도와 월 계산
 			month += duration;
+			// 12개월 넘으면 year에 넣어줘야지 응...
 			year += (month - 1) / 12;
+			// 이제 나머지 부분 짜잔.
 			month = (month - 1) % 12 + 1;
 
 			int finalDate = year * 12 * 28 + month * 28 + day - 1;
 
 			// 만료일이 오늘 이전이라면 파기 대상
 			if (finalDate < todayDate) {
-				delete.add(i + 1); // 번호는 1부터 시작
+				delete.add(i + 1); // 당첨되셨습니다. 사라지세요.
 			}
 		}
 
-		// 결과를 정수 배열로 변환하여 반환
+		// 정수배열로 바꾸기
 		return delete.stream().mapToInt(Integer::intValue).toArray();
 	}
 
