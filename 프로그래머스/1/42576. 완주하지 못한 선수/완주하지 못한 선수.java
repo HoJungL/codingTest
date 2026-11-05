@@ -1,14 +1,19 @@
 import java.util.*;
 class Solution {
     public String solution(String[] participant, String[] completion) {
-        Arrays.sort(participant);
-        Arrays.sort(completion);
-        
-        for (int i = 0; i<completion.length; i++){
-            // 완수자 수
-                if (!participant[i].contains(completion[i]))
-                    return participant[i];
+        HashMap<String,Integer> map = new HashMap<>();
+        for (String name : participant){
+            map.put(name, map.getOrDefault(name,0) +1);
         }
-        return participant[participant.length-1];
+        for (String name :completion){
+            map.put(name, map.get(name)-1);
+        }
+        for (String name : participant){
+            if (map.get(name)>0){
+                return name;
+            }
+        }
+
+        return "";
     }
 }
