@@ -1,15 +1,26 @@
 class Solution {
     public int solution(int[] array, int n) {
         int answer = 0;
-        int count = 100;
-        int len = array.length;
-        for (int i = 0 ; i<len;i++){
-            int distance = Math.abs(array[i] - n);
-            if (count > distance ||(distance == count && array[i] < answer)) {
-                count = distance;
-                answer = array[i];
+
+        // 최솟값이라고 가정
+        int num = array[0];
+        // 가장 작은값인지 기록하기 위한 수치 저장소
+        int count1 = Math.abs(n-array[0]);
+        for (int i = 0 ; i <array.length;i++){
+            
+            // 거리 수치
+            int count2 = Math.abs(n-array[i]);
+            
+            if (count1 > count2){
+                count1 = count2;
+                                num = array[i];
+
+            }
+            
+            if (count1 ==count2 && num> array[i]){
+                num = array[i];
             }
         }
-        return answer;
+        return num;
     }
 }
